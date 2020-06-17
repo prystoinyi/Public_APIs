@@ -34,8 +34,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Home() {
   const classes = useStyles();
 
-  console.log(dataApis);
-
   return (
     <div className={classes.paddingContainer}>
       <Grid container justify="center" spacing={5}>

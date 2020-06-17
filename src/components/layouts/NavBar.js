@@ -25,7 +25,7 @@ function NavBar() {
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
-          <Button color="inherit" className={classes.button} size="large" component={Link} to="/">
+          <Button variant="outlined" color="inherit" className={classes.button} size="large" component={Link} to="/">
             Public APIs
           </Button>
           <div className={classes.grow} />
