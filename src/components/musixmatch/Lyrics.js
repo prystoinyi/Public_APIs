@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
 import axios from "axios";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
 import Spinner from "../layouts/Spinner";
+// MUI stuff
+import { withStyles } from "@material-ui/core/styles";
 import {
   Card,
   CardHeader,
@@ -18,7 +20,9 @@ import {
   List,
   ListItem,
   ListItemIcon,
+  Backdrop,
 } from "@material-ui/core";
+// Icons
 import QueueMusicIcon from "@material-ui/icons/QueueMusic";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -79,7 +83,11 @@ class Lyrics extends Component {
       Object.keys(track).length === 0 ||
       Object.keys(lyrics).length === 0
     ) {
-      return <Spinner />
+      return (
+        <Backdrop open>
+          <Spinner />
+        </Backdrop>
+      );
     } else {
       return (
         <Container className={classes.container}>
@@ -87,9 +95,13 @@ class Lyrics extends Component {
             variant="contained"
             color="primary"
             component={Link}
-            to="/musixmatch"
+            to={
+              this.props.location.state === undefined
+                ? "/"
+                : this.props.location.state.prevPath
+            }
           >
-            Go Back
+            {this.props.location.state === undefined ? "Home" : "Go Back"}
           </Button>
           <Card raised>
             <CardHeader
@@ -164,5 +176,9 @@ class Lyrics extends Component {
     }
   }
 }
+
+Lyrics.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(useStyles)(Lyrics);

@@ -1,8 +1,24 @@
-import React, { Component } from "react";
-import axios from "axios";
+import React, { Component, Fragment } from "react";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
+// MUI stuff
 import { withStyles } from "@material-ui/core/styles";
-import { Paper, Typography, Grid, TextField, Button } from "@material-ui/core";
+import {
+  Paper,
+  Typography,
+  Grid,
+  TextField,
+  Button,
+  Hidden,
+  IconButton,
+  InputAdornment,
+} from "@material-ui/core";
+// Icons
 import MusicNoteIcon from "@material-ui/icons/MusicNote";
+import SearchIcon from "@material-ui/icons/Search";
+// Redux stuff
+import { connect } from "react-redux";
+import { searchTrackList } from "../../actions/musixmatchActions";
 
 const useStyles = (theme) => ({
   root: {
@@ -24,11 +40,13 @@ const useStyles = (theme) => ({
     display: "flex",
     "justify-content": "center",
   },
+  indent: {
+    marginTop: "3%",
+  },
 });
 
 class Search extends Component {
   state = {
-    track_list: [],
     trackTitle: "",
   };
 
@@ -36,45 +54,91 @@ class Search extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  findTrack = () => {
-    if (this.state.trackTitle !== "") {
-      axios
-        .get(
-          `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.search?q_track=${this.state.trackTitle}&page_size=10&page=1&s_track_rating=desc&apikey=${process.env.REACT_APP_MM_KEY}`
-        )
-        .then((res) => {
-          this.setState({
-            track_list: res.data.message.body.track_list,
-            trackTitle: "",
-          });
+  validate = () => {
+    let isError = false;
+    const errors = {
+      isError: false,
+      trackTitleError: "",
+    };
 
-          this.updateData();
-        })
-        .catch((err) => console.log(err));
+    if (this.state.trackTitle.length < 3) {
+      isError = true;
+      errors.isError = true;
+      errors.trackTitleError =
+        "Song title needs to be at least 3 characters long";
     }
+
+    this.setState({
+      ...this.state,
+      ...errors,
+    });
+
+    return isError;
   };
 
-  updateData = () => {
-    return this.props.updateState(this.state.track_list);
+  findTrack = (e) => {
+    e.preventDefault();
+
+    const err = this.validate();
+
+    if (!err) {
+      this.props.searchTrackList(this.state.trackTitle, this.props.history);
+    }
   };
 
   render() {
     const { classes } = this.props;
 
-    return (
-      <Grid item xs={12} className={classes.root}>
-        <Paper elevation={10}>
-          <div className={classes.iconCenter}>
-            <Typography variant="h3" component="span">
-              <MusicNoteIcon className={classes.icon} /> Search For A Song
-            </Typography>
-          </div>
+    if (this.props.location.pathname === "/musixmatch") {
+      return (
+        <Grid item xs={12} className={classes.root}>
+          <Paper elevation={10}>
+            <div className={classes.iconCenter}>
+              <Typography variant="h3" component="span">
+                <MusicNoteIcon className={classes.icon} /> Search{" "}
+                <Hidden only="xs">For A Song</Hidden>
+              </Typography>
+            </div>
 
-          <Typography variant="subtitle1">
-            Get the lyrics for any song
-          </Typography>
-          <form noValidate autoComplete="off">
+            <Typography variant="subtitle1">
+              Get the lyrics for any song
+            </Typography>
+            <form noValidate autoComplete="off" onSubmit={this.findTrack}>
+              <TextField
+                type="text"
+                label="Song title..."
+                variant="outlined"
+                fullWidth
+                name="trackTitle"
+                onChange={this.onChange}
+                value={this.state.trackTitle}
+                error={this.state.isError}
+                helperText={this.state.trackTitleError}
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                className={classes.button}
+                type="submit"
+              >
+                Get Track Lyrics
+              </Button>
+            </form>
+          </Paper>
+        </Grid>
+      );
+    } else {
+      return (
+        <Fragment>
+          <form
+            noValidate
+            autoComplete="off"
+            onSubmit={this.findTrack}
+            className={classes.indent}
+          >
             <TextField
+              size="small"
               type="text"
               label="Song title..."
               variant="outlined"
@@ -82,21 +146,35 @@ class Search extends Component {
               name="trackTitle"
               onChange={this.onChange}
               value={this.state.trackTitle}
+              error={this.state.isError}
+              helperText={this.state.trackTitleError}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      className={classes.iconButton2}
+                      type="submit"
+                      aria-label="search"
+                      size="small"
+                    >
+                      <SearchIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              className={classes.button}
-              onClick={this.findTrack}
-            >
-              Get Track Lyrics
-            </Button>
           </form>
-        </Paper>
-      </Grid>
-    );
+        </Fragment>
+      );
+    }
   }
 }
 
-export default withStyles(useStyles)(Search);
+Search.propTypes = {
+  classes: PropTypes.object.isRequired,
+  searchTrackList: PropTypes.func.isRequired,
+};
+
+export default connect(null, { searchTrackList })(
+  withRouter(withStyles(useStyles)(Search))
+);
