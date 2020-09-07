@@ -65,6 +65,7 @@ class OneColumnList extends Component {
             </ListItemText>
           </Hidden>
           <IconButton
+            style={{ color: "#ff3d00" }}
             component={Link}
             to={{
               pathname: `/lyrics/track/${track.track_id}`,

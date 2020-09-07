@@ -41,7 +41,7 @@ export const searchTrackList = (trackTitle, history) => (dispatch) => {
   });
   axios
     .get(
-      `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.search?q_track=${trackTitle}&page_size=50&page=1&s_track_rating=desc&apikey=${process.env.REACT_APP_MM_KEY}`
+      `https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.search?q_track=${trackTitle}&page_size=100&page=1&s_track_rating=desc&apikey=${process.env.REACT_APP_MM_KEY}`
     )
     .then((res) => {
       dispatch({

@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
+import './App.css'
 // MUI stuff
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
@@ -44,15 +45,15 @@ function App() {
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <React.Fragment>
-          <NavBar />
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/musixmatch" component={Musixmatch} />
-            <Route exact path="/musixmatch/search" component={Search} />
-            <Route exact path="/lyrics/track/:id" component={Lyrics} />
-            <Route exact path="/pixabay" component={Pixabay} />
-            <Route component={Error} />
-          </Switch>
+            <NavBar />
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/musixmatch" component={Musixmatch} />
+              <Route exact path="/musixmatch/search" component={Search} />
+              <Route exact path="/lyrics/track/:id" component={Lyrics} />
+              <Route exact path="/pixabay" component={Pixabay} />
+              <Route component={Error} />
+            </Switch>
         </React.Fragment>
       </Provider>
     </ThemeProvider>
