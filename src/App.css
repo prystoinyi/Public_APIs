@@ -7,8 +7,20 @@
   }
 }
 
+#gridList:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 5px;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-track {
@@ -16,6 +28,5 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #bbbbbb;
-  border-radius: 10px;
+  background-color: #6d6d6d;
 }

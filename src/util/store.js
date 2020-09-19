@@ -11,7 +11,7 @@ const middleware = [thunk];
 
 const reducers = combineReducers({
   musixmatch: musixmatchReducer,
-  //   pixabay: pixabayReducer,
+  pixabay: pixabayReducer,
   UI: uiReducer,
 });
 

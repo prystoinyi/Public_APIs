@@ -12,7 +12,8 @@ import Error from "./components/layouts/Error";
 import Musixmatch from "./components/musixmatch/Home";
 import Pixabay from "./components/pixabay/Home";
 import Lyrics from "./components/musixmatch/Lyrics";
-import Search from "./components/musixmatch/SearchPage";
+import SearchMusixmatch from "./components/musixmatch/SearchPage";
+import SearchPixabay from './components/pixabay/SearchPage'
 // Redux stuff
 import { Provider } from "react-redux";
 import store from "./util/store";
@@ -49,9 +50,10 @@ function App() {
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/musixmatch" component={Musixmatch} />
-              <Route exact path="/musixmatch/search" component={Search} />
+              <Route exact path="/musixmatch/search" component={SearchMusixmatch} />
               <Route exact path="/lyrics/track/:id" component={Lyrics} />
               <Route exact path="/pixabay" component={Pixabay} />
+              <Route exact path="/pixabay/search" component={SearchPixabay} />
               <Route component={Error} />
             </Switch>
         </React.Fragment>

@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Toolbar, IconButton, Button } from "@material-ui/core";
 // Icons
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -13,15 +14,24 @@ const useStyles = makeStyles((theme) => ({
   button: {
     "text-transform": "none",
   },
+  appbar: {
+    position: "fixed",
+    backgroundColor: "rgb(2 2 2 / 55%)",
+  },
+  appbarMain: {
+    position: "static",
+  },
 }));
 
-function NavBar() {
+function NavBar(props) {
   const classes = useStyles();
+
+  const { loadingAppBar } = props.pixabay;
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
-        <Toolbar>
+      <AppBar className={loadingAppBar ? classes.appbar : classes.appbarMain}>
+        <Toolbar style={{ minHeight: "6vh" }}>
           <Button
             color="inherit"
             className={classes.button}
@@ -41,4 +51,8 @@ function NavBar() {
   );
 }
 
-export default NavBar;
+const mapStateToProps = (state) => ({
+  pixabay: state.pixabay,
+});
+
+export default connect(mapStateToProps)(NavBar);
