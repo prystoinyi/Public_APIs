@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Search from "./Search";
+import PixabayLogo from "../../images/pixabay.png";
 // MUI stuff
 import { withStyles, GridList, GridListTile } from "@material-ui/core";
 // Redux stuff
 import store from "../../util/store";
 import { APPBAR_PIXABAY, APPBAR_PIXABAY_STOP } from "../../actions/actionTypes";
-import { searchImageList, getImageList } from "../../actions/pixabayActions";
+import { getImageList } from "../../actions/pixabayActions";
 import { connect } from "react-redux";
 
 const useStyles = (theme) => ({
@@ -23,6 +24,14 @@ const useStyles = (theme) => ({
     objectFit: "cover",
     height: "100%",
     width: "100%",
+  },
+  positionPixabayLogo: {
+    position: "fixed",
+    bottom: "2%",
+    right: "2%",
+  },
+  imgLogo: {
+    height: "65px",
   },
 });
 
@@ -85,6 +94,19 @@ class Home extends Component {
           ))}
         </GridList>
         <Search />
+        <div className={classes.positionPixabayLogo}>
+          <a
+            href="https://pixabay.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src={PixabayLogo}
+              alt="Pixabay Logo"
+              className={classes.imgLogo}
+            />
+          </a>
+        </div>
       </div>
     );
   }
